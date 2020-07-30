@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  compaines:
+    destroy: "%{name} has been successfully deleted."
+    errors:
+      destroy: "Unable to delete %{name}."

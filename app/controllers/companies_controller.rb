@@ -32,6 +32,15 @@ class CompaniesController < ApplicationController
     end
   end  
 
+  def destroy
+    if @company.destroy
+      redirect_to companies_path, notice: t("compaines.destroy", name: @company.name)
+    else
+      Rails.logger.error "Error while destroying company with id: #{@company.id}, errors: #{@company.errors.full_messages}"
+      redirect_to companies_path, alert: t("compaines.errors.destroy", name: @company.name)
+    end
+  end
+
   private
 
   def company_params

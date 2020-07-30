@@ -1,5 +1,6 @@
 <div class="py-5">
   <%= form_for @company do |f| %>
+   <%= render "shared/errors/errors_show", model: @company %>
 
     <div class="row my-lg-3">
       <div class="col-lg-3">
@@ -53,7 +54,7 @@
       </div>
       <div class="col-lg offset-lg-1">
         <div class="form-group">
-          <%= f.text_field :email, class: "form-control", placeholder: "hello@company.com"%>
+          <%= f.text_field :email, class: "form-control", placeholder: "hello@getmainstreet.com"%>
         </div>
       </div>
     </div>
