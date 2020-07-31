@@ -99,25 +99,24 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_equal "28173", last_company.zip_code
   end
 
-  test "When user confirms to delete" do
+  test "delete" do
     visit company_path(@company)
 
     accept_confirm do
       click_link "Delete"
     end
-
-    assert_text I18n.t("notice.destroy", name: @company.name)
+    assert_text I18n.t("compaines.destroy", name: @company.name)
     assert_text "Create a Company"
   end
 
-  test "When user denies to delete" do
+  test "delete failure" do
+    allow_any_instance_of(Company).to receive(:destroy).and_return(false)
     visit company_path(@company)
 
     dismiss_confirm do
       click_link "Delete"
     end
-
-    assert_text @company.name
+    assert_text I18n.t("compaines.errors.destroy", name: @company.name)
   end
 
 end
