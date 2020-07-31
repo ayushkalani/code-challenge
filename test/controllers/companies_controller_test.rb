@@ -24,12 +24,53 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_text @company.city_state
   end
 
-  test "Update" do
+  test "Update with valid zip_code" do
+    visit edit_company_path(@company)
+    zip_code = Faker::Address.zip_code
+    within("form#edit_company_#{@company.id}") do
+      fill_in("company_name", with: "Updated Test Company")
+      fill_in("company_zip_code", with: zip_code)
+      click_button "Update Company"
+    end
+
+    assert_text "Changes Saved"
+    @company.reload
+    assert_equal "Updated Test Company", @company.name
+    assert_equal zip_code, @company.zip_code
+  end
+
+  test "Update with invalid zip_code" do
     visit edit_company_path(@company)
 
     within("form#edit_company_#{@company.id}") do
       fill_in("company_name", with: "Updated Test Company")
-      fill_in("company_zip_code", with: "93009")
+      fill_in("company_zip_code", with: "0")
+      click_button "Update Company"
+    end
+
+    assert_text "zip_code not found"
+  end
+
+  test "Update with invalid email" do
+    visit edit_company_path(@company)
+
+    within("form#edit_company_#{@company.id}") do
+      fill_in("company_name", with: "Updated Test Company")
+      fill_in("company_zip_code", with: Faker::Address.zip_code)
+      fill_in("company_email", with: Faker::Internet.email)
+      click_button "Update Company"
+    end
+
+    assert_text "Valid email domains should have getmainstreet"
+  end
+
+  test "Update with valid email" do
+    visit edit_company_path(@company)
+
+    within("form#edit_company_#{@company.id}") do
+      fill_in("company_name", with: "Updated Test Company")
+      fill_in("company_zip_code", with: Faker::Address.zip_code)
+      fill_in("company_email", with: "hello@getmainstreet.com")
       click_button "Update Company"
     end
 
@@ -37,7 +78,7 @@ class CompaniesControllerTest < ApplicationSystemTestCase
 
     @company.reload
     assert_equal "Updated Test Company", @company.name
-    assert_equal "93009", @company.zip_code
+    assert_equal "hello@getmainstreet.com", @company.email
   end
 
   test "Create" do

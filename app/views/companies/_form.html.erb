@@ -1,6 +1,13 @@
 <div class="py-5">
   <%= form_for @company do |f| %>
-   <%= render "shared/errors/errors_show", model: @company %>
+
+    <% if @company.errors.any? %>
+      <ul class="alert alert-danger" id="alert_message">
+      <% @company.errors.full_messages.each.with_index(1) do |msg, index| %>
+        <%= index %>. <%= msg %>.
+        <% end %>
+      </ul>
+    <% end %>
 
     <div class="row my-lg-3">
       <div class="col-lg-3">
